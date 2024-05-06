@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.UUID;
 
-@RestController("/student")
+@RestController
 public class StudentController {
     private StudentServiceImpl studentService;
     private PaymentServiceImpl paymentService;
@@ -20,23 +20,23 @@ public class StudentController {
         this.studentService = studentService;
         this.paymentService = paymentService;
     }
-    @GetMapping
+    @GetMapping("/student")
     public List<Student> allStudent(){
         return studentService.getAllStudent();
     }
-    @GetMapping("/{id}")
+    @GetMapping("/student/{id}")
     public Student  getStudent(@PathVariable("id")UUID id){
         return studentService.findStudentById(id).get();
     }
-    @PostMapping
+    @PostMapping("/student")
     public Student  saveStudent(@RequestBody Student student){
         return studentService.saveStudent(student);
     }
-    @PutMapping("/{id}")
+    @PutMapping("/student/{id}")
     public Student  updateStudent(@PathVariable("id") UUID studentId,@RequestBody Student student){
         return studentService.udpateStudent(studentId,student);
     }
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/student/{id}")
     public ResponseEntity<String> deleteStudent(@PathVariable("id") UUID studentId){
          studentService.deleteStudentById(studentId);
          return ResponseEntity.status(HttpStatus.OK).body("deleted");
