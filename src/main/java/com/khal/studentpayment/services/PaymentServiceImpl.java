@@ -3,10 +3,11 @@ package com.khal.studentpayment.services;
 import com.khal.studentpayment.entities.Payment;
 import com.khal.studentpayment.entities.Student;
 import com.khal.studentpayment.repositories.PaymentRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
-
+@Service
 public class PaymentServiceImpl implements PaymentService{
     private PaymentRepository paymentRepository;
 
@@ -25,7 +26,7 @@ public class PaymentServiceImpl implements PaymentService{
     }
 
     @Override
-    public Payment getPaymentByStudent(Student student) {
-        return null;
+    public List<Payment> getPaymentByStudentCode(String code) {
+        return paymentRepository.findByStudentCode(code);
     }
 }
