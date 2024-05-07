@@ -1,13 +1,18 @@
 package com.khal.studentpayment.controllers;
 
 import com.khal.studentpayment.entities.Payment;
+import com.khal.studentpayment.entities.PaymentType;
 import com.khal.studentpayment.entities.Student;
 import com.khal.studentpayment.services.PaymentServiceImpl;
 import com.khal.studentpayment.services.StudentServiceImpl;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
@@ -45,9 +50,25 @@ public class StudentController {
     public List<Payment> allPayment(){
         return paymentService.getAllPayment();
     }
-    @GetMapping("/payment/{id}")
+    @GetMapping("/payment/{id}/student")
     public List<Payment> getPaymentByStudentCode(@PathVariable("id") String id){
         return paymentService.getPaymentByStudentCode(id);
+    }
+    @PostMapping("/payment")
+    public Payment savePayment(@RequestBody Payment payment){
+        return paymentService.savePayment(payment);
+    }
+    @PostMapping(value = "/payment/save", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public Payment savePaymentWithUpload(@RequestParam MultipartFile file,
+                                         LocalDate date,
+                                         PaymentType type,
+                                         Double amount,
+                                         String studentCode) throws IOException {
+        return paymentService.savePaymentWithUpload(file,date,type,amount,studentCode);
+    }
+    @GetMapping(value = "/paymentFile/{id}", produces = MediaType.APPLICATION_PDF_VALUE)
+    public byte [] getPaymentFile(@PathVariable("id") UUID paymentId){
+return paymentService.getPaymetFile(paymentId);
     }
 
 }
